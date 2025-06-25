@@ -3,9 +3,10 @@ import { superbase } from "@/lib/supabase";
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import type { Session } from "@supabase/supabase-js";
 
 export default function Home() {
-  const [session, setSession] = useState(null);
+  const [session, setSession] = useState<Session | null>(null);
   const router = useRouter();
   const fetchSession = async () => {
     const { data } = await superbase.auth.getSession();

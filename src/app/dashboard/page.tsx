@@ -1,16 +1,14 @@
 "use client";
 
+import { EventCard } from "@/components/EventCard";
+import Navbar from "@/components/Navbar";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { ConnectGoogleCalendar } from "@/components/ConnectGoogleCalendar";
-import { AccessRevokeButton } from "@/components/AccessRevokeButton";
-import { EventCard } from "@/components/EventCard";
-import Logout from "@/components/Logout";
-import Navbar from "@/components/Navbar";
+import type { CalendarEvent } from "@/types";
 
 export default function Dashboard() {
   const { data: session } = useSession();
-  const [events, setEvents] = useState<any[]>([]);
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
   const [summaries, setSummaries] = useState<Record<number, string>>({});
 
@@ -33,7 +31,7 @@ export default function Dashboard() {
     loadEvents();
   }, [session]);
 
-  const handleSummarize = async (event: any, index: number) => {
+  const handleSummarize = async (event: CalendarEvent, index: number) => {
     setLoadingIndex(index);
     try {
       const res = await fetch("/api/summarize", {

@@ -3,13 +3,14 @@
 import { superbase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import type { Session } from "@supabase/supabase-js";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [session, setSession] = useState<any>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -35,7 +36,7 @@ export default function DashboardLayout({
     if (!loading && !session) {
       router.push("/login");
     }
-  }, [loading, session]);
+  }, [loading, session, router]);
 
   if (loading) {
     return (

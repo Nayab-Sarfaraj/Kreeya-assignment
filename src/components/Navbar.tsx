@@ -1,6 +1,4 @@
-import React from "react";
 import { ConnectGoogleCalendar } from "@/components/ConnectGoogleCalendar";
-import { AccessRevokeButton } from "@/components/AccessRevokeButton";
 import Logout from "@/components/Logout";
 const Navbar = () => {
   return (

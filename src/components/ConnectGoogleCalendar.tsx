@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession, signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { AccessRevokeButton } from "./AccessRevokeButton";
 
 export const ConnectGoogleCalendar = () => {

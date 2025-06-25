@@ -1,7 +1,8 @@
 "use client";
+import type { CalendarEvent } from "@/types";
 
 type Props = {
-  event: any;
+  event: CalendarEvent;
   index: number;
   summary?: string;
   loading: boolean;
@@ -15,6 +16,7 @@ export const EventCard = ({
   loading,
   onSummarize,
 }: Props) => {
+  console.log(index);
   return (
     <li className="bg-zinc-900 border border-zinc-700 rounded-xl shadow-md p-4 transition">
       <p className="text-lg font-semibold text-white">{event.summary}</p>
