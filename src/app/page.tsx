@@ -1,6 +1,6 @@
 "use client";
-import { superbase } from "@/lib/supabase";
 
+import { superbase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
@@ -8,33 +8,51 @@ import type { Session } from "@supabase/supabase-js";
 export default function Home() {
   const [session, setSession] = useState<Session | null>(null);
   const router = useRouter();
-  const fetchSession = async () => {
-    const { data } = await superbase.auth.getSession();
-    console.log(data);
-    setSession(data.session);
-  };
+
   useEffect(() => {
-    fetchSession();
-    const { data: authListener } = superbase.auth.onAuthStateChange(
-      (_event, session) => {
-        setSession(session);
-      }
-    );
-    return () => {
-      authListener.subscription.unsubscribe();
+    const fetchSession = async () => {
+      const { data } = await superbase.auth.getSession();
+      setSession(data.session);
     };
+
+    fetchSession();
+
+    const {
+      data: { subscription },
+    } = superbase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      {/* <ConnectGoogleCalendar /> */}
-      {session ? (
-        <button onClick={() => router.push("/dashboard")}>
-          Go to Dashboard
-        </button>
-      ) : (
-        <button onClick={() => router.push("/login")}>Login</button>
-      )}
+    <div className="min-h-screen bg-black text-white flex items-center justify-center px-6">
+      <div className="max-w-md text-center space-y-6">
+        <h1 className="text-4xl font-bold tracking-tight">
+          🧠 Kreeya AI Calendar
+        </h1>
+        <p className="text-zinc-400 text-base">
+          Connect your Google Calendar and get AI-powered event summaries
+          instantly.
+        </p>
+
+        {session ? (
+          <button
+            onClick={() => router.push("/dashboard")}
+            className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-xl transition"
+          >
+            Go to Dashboard
+          </button>
+        ) : (
+          <button
+            onClick={() => router.push("/login")}
+            className="px-6 py-3 bg-white text-black hover:bg-zinc-200 font-medium rounded-xl transition"
+          >
+            Login to Get Started
+          </button>
+        )}
+      </div>
     </div>
   );
 }
